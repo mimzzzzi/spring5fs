@@ -1,6 +1,5 @@
 package main;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,11 +18,12 @@ import spring.RegisterRequest;
 import spring.WrongIdPasswordException;
 
 public class MainForSpring {
-	
-	private static ApplicationContext ctx = null;
 
+	private static ApplicationContext ctx = null;
+	
 	public static void main(String[] args) throws IOException {
 		ctx = new AnnotationConfigApplicationContext(AppCtx.class);
+		
 		BufferedReader reader = 
 				new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
@@ -42,12 +42,11 @@ public class MainForSpring {
 			} else if (command.equals("list")) {
 				processListCommand();
 				continue;
-			}else if (command.startsWith("info ")) {
+			} else if (command.startsWith("info ")) {
 				processInfoCommand(command.split(" "));
 				continue;
-			}
+			} 
 			printHelp();
-		
 		}
 	}
 
@@ -56,7 +55,8 @@ public class MainForSpring {
 			printHelp();
 			return;
 		}
-		MemberRegisterService regSvc = ctx.getBean("memberRegSvc",MemberRegisterService.class);
+		MemberRegisterService regSvc = 
+				ctx.getBean("memberRegSvc", MemberRegisterService.class);
 		RegisterRequest req = new RegisterRequest();
 		req.setEmail(arg[1]);
 		req.setName(arg[2]);
@@ -80,8 +80,8 @@ public class MainForSpring {
 			printHelp();
 			return;
 		}
-		ChangePasswordService changePwdSvc = 
-				ctx.getBean("changePwdSvc",ChangePasswordService.class);
+		ChangePasswordService changePwdSvc =
+				ctx.getBean("changePwdSvc", ChangePasswordService.class);
 		try {
 			changePwdSvc.changePassword(arg[1], arg[2], arg[3]);
 			System.out.println("암호를 변경했습니다.\n");
@@ -100,18 +100,23 @@ public class MainForSpring {
 		System.out.println("change 이메일 현재비번 변경비번");
 		System.out.println();
 	}
+
 	private static void processListCommand() {
 		MemberListPrint listPrinter = 
-				ctx.getBean("listPrinter", MemberListPrint.class);
+				ctx.getBean("listPrint", MemberListPrint.class);
 		listPrinter.printAll();
 	}
+
 	private static void processInfoCommand(String[] arg) {
 		if (arg.length != 2) {
 			printHelp();
 			return;
 		}
-		MemberInfoPrinter infoPrinter  = ctx.getBean("infoPrinter", MemberInfoPrinter.class);
+		MemberInfoPrinter infoPrinter = 
+				ctx.getBean("infoPrinter", MemberInfoPrinter.class);
 		infoPrinter.printMemberInfo(arg[1]);
-		
 	}
+	
+
+
 }
