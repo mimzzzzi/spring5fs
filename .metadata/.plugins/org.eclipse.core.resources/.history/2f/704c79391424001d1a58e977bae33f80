@@ -1,0 +1,6 @@
+package spring;
+
+public class MemberListPrint {
+	private MemberDao memberDao;
+	private MemberPrinter printer;
+}
